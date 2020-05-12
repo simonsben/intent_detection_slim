@@ -1,0 +1,7 @@
+__pycache__/
+.idea/
+misc/
+data/
+venv/
+
+config.py
