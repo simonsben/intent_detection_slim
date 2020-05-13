@@ -38,7 +38,7 @@ def check_existence(paths):
             raise FileExistsError(path, 'does not exist.')
 
 
-def open_w_pandas(path, columns=None, index_col=0, encoding='utf-8'):
+def load_data(path, columns=None, index_col=0, encoding='utf-8'):
     """
     Opens file as a Panda DataFrame
 
@@ -57,20 +57,23 @@ def output_abusive_intent(indexes, predictions, contexts, filename=None):
     """
     Prints abusive intent results to console and saves to disk
 
-    :param ndarray indexes: Array of targetted indexes to output (ex. output from argsort)
+    :param Iterator indexes: Array of targeted indexes to output (ex. output from argsort)
     :param ndarray predictions: Array of predictions (3 x N array)
     :param ndarray contexts: Array of corresponding documents
-    :param Path filename: Path for predictions to be saved to [doesn't save by defauly]
+    :param Path filename: Path for predictions to be saved to [doesn't save by default]
     """
     indexes = asarray(list(indexes)) if not isinstance(indexes, ndarray) else indexes
     abuse, intent, abusive_intent = predictions
 
     if filename is not None:
-        savetxt(filename, indexes, delimiter=',', fmt='%d')
+        header = ','.join(['abuse', 'intent', 'abusive_intent'])
+        savetxt(filename, indexes, delimiter=',', fmt='%d', header=header)
 
     print('%10s %8s %8s %8s  %s' % ('index', 'hybrid', 'intent', 'abuse', 'context'))
     for index in indexes:
-        print('%10d %8.4f %8.4f %8.4f  %s' % (index, abusive_intent[index], intent[index], abuse[index], contexts[index]))
+        print(
+            '%10d %8.4f %8.4f %8.4f  %s' % (index, abusive_intent[index], intent[index], abuse[index], contexts[index])
+        )
 
 
 def save_vector(data_vector, path):

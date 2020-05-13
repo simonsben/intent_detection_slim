@@ -3,5 +3,7 @@ __pycache__/
 misc/
 data/
 venv/
+.env/
 
 config.py
+*.bin

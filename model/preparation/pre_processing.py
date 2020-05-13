@@ -1,7 +1,7 @@
 from multiprocessing import Pool
 from functools import partial
 from config import n_threads
-from utilities import open_w_pandas
+from utilities import load_data
 from model.preparation.contexts import split_into_contexts
 from utilities import save_contexts
 from utilities.pre_processing import *
@@ -50,7 +50,7 @@ def process_documents(source_path, target_path, processes=None, content_index=0)
     :param list processes: List of pre-processing functions, (document_content) -> (value, modified_content)
     :param int content_index: Index of the document content
     """
-    data = open_w_pandas(source_path, index_col=None).values[:, content_index]
+    data = load_data(source_path, index_col=None).values[:, content_index]
 
     if processes is None:
         processes = standard_processes

@@ -1,6 +1,6 @@
 # Data constants
 dataset = 'dataset'
-fast_text_model = 'model'
+fast_text_model = 'cc.en.300'
 
 # Execution platform constants
 n_threads = 4
