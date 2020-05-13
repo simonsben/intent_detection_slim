@@ -27,6 +27,8 @@ cd "data/model/"
 wget https://raw.githubusercontent.com/facebookresearch/fastText/master/download_model.py
 python "download_model.py" "en"
 
+# TODO Add download for intent model
+
 echo "Cleaning up files."
 rm "download_model.py"
 rm "cc.en.300.bin.gz"
