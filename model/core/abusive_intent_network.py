@@ -8,28 +8,28 @@ def compute_inner_product(value_one, value_two, norm=2):
     return (value_one ** norm + value_two ** norm) ** (1 / norm)
 
 
-# TODO correct to space bins based on data distribution (similar to a lebesgue integral)
-def estimate_cumulative(data, num_bins=150):
+# TODO correct to space bins based on distribution
+def estimate_cumulative(data, num_bins=1000):
     """
     Estimates the cumulative distribution of a dataset
 
-    :param data: Data vector, numpy array
-    :param num_bins: Number of bins to use in the estimation, int
+    :param ndarray data: Data vector, numpy array
+    :param int num_bins: Number of bins to use in the estimation, int
     :return: Estimated function
     """
     distribution, bin_edges = histogram(data, bins=num_bins)
     bin_edges = bin_edges[:-1]
 
-    cumulative = cumsum(distribution)
-    cumulative -= cumulative[0]
-    cumulative = sqrt(cumulative / cumulative[-1])
+    cumulative = cumsum(distribution)           # Get cumulative sum
+    cumulative -= cumulative[0]                 # Shift distribution to align with bin edges
+    cumulative = cumulative / cumulative[-1]    # Convert cumulative to percentile
 
     def cumulative_function(prediction):
         relative_locations = bin_edges <= prediction
         if relative_locations[-1]:              # If its in the last bin
             return cumulative[-1]
 
-        bin_index = argmin(relative_locations)  # Get index of the bin
+        bin_index = argmin(relative_locations) - 1  # Get index of the bin
         return cumulative[bin_index]            # Return approx cumulative sum at the point
 
     return cumulative_function
@@ -41,8 +41,8 @@ def compute_abusive_intent(intent_predictions, abuse_predictions, method='produc
 
     :param ndarray intent_predictions: Array of intent predictions
     :param ndarray abuse_predictions: Array of abuse predictions
-    :param str method: Abusive intent calculation method to use [default product]
-    :return ndarray: Array of predictions same shape as input arrays
+    :param str method: Choice of abusive intent computation
+    :return ndarray: Array of abusive intent predictions
     """
     if not isinstance(intent_predictions, ndarray):
         raise TypeError('Expected intent predictions to be a numpy array.')
@@ -76,7 +76,7 @@ def predict_abusive_intent(realtime_documents, abusive_intent_network, method='p
     :param str method: method used to make abusive intent predictions
     :return tuple: tuple of abuse, intent, and abusive-intent predictions
     """
-    abuse_predictions, intent_predictions = [
+    abuse_predictions, intent_predictions, _ = [
         predictions.reshape(-1) for predictions in abusive_intent_network.predict_generator(
             realtime_documents, verbose=execute_verbosity
         )
@@ -85,3 +85,5 @@ def predict_abusive_intent(realtime_documents, abusive_intent_network, method='p
     abusive_intent_predictions = compute_abusive_intent(intent_predictions, abuse_predictions, method)
 
     return abuse_predictions, intent_predictions, abusive_intent_predictions
+
+

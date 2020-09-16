@@ -9,15 +9,15 @@ from numpy import argsort
 
 base = make_path('data/')
 embedding_path = base / 'model' / (fast_text_model + '.bin')
-model_path = base / 'model' / 'production'
+model_dir = base / 'model' / 'production/'
 context_path = base / 'source' / (dataset + '_clean.csv')
 target_dir = base / 'predictions/'
 
-check_existence([embedding_path, model_path, context_path])
+check_existence([embedding_path, model_dir, context_path])
 print('Config complete.')
 
 embedding_model = ft_load(str(embedding_path))
-model = keras_load(str(model_path), custom_objects={'AttentionWithContext': AttentionWithContext})
+model = keras_load(model_dir, custom_objects={'AttentionWithContext': AttentionWithContext})
 print('Loaded models.')
 
 contexts = load_data(context_path)['contexts'].values

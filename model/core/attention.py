@@ -3,7 +3,7 @@ from keras import initializers, regularizers, constraints
 from keras.engine.topology import Layer
 
 # TODO clean up code
-# Code from https://www.kaggle.com/hsankesara/news-classification-using-han/notebook
+# TODO get updated code from https://github.com/Hsankesara/DeepResearch/tree/master/Hierarchical_Attention_Network
 
 
 def dot_product(x, kernel):
