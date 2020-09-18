@@ -13,6 +13,7 @@ Before making predictions prepare the environment by executing [`setup.py`](setu
 This will create the appropriate data directories, download dependencies, and download the fastText model.
 
 Once the environment is prepared place your dataset (saved in a csv) to [`data/source/`](data/source).
+Place your abusive intent model in [`data/model/`](data/model).
 Then change the dataset name in [`config.py`](config.py) to correspond to that filename.
 Set your shell to use the virtual environment by running `source ".env/bin/activate"` from the root directory.
 Change the `context_index` value in [`prepare_data.py`](execution/prepare_data.py) to the column index of the text.
